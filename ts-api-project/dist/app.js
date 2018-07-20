@@ -15,11 +15,22 @@ app.get('/page', (req, res) => {
     });
 });
 // app.get('/data', (req: Request, res: Response) => peoples.get);
-app.get('/peoples', (req, res) => controllers_1.peoples.get()
+// app.use((req: Request, res: Response, next: NextFunction)=>{
+//   console.log('App next');
+//   next();
+// })
+app.get('/peoples', (req, res, next) => {
+    // console.log('Middlware');
+    next();
+}, (req, res) => controllers_1.peoples.get()
     .then(people => res.status(200).send(people)));
-app.post('/peoples', (req, res) => {
+app.post('/peoples', (req, res, next) => {
+    console.log('Middlware');
+    next();
+}, (req, res) => {
     return controllers_1.peoples.create(req.body)
-        .then(people => res.status(200).send(people));
+        .then(people => res.status(200).send(people))
+        .catch((error) => res.status(400).send(error));
 });
 exports.default = app;
 //# sourceMappingURL=app.js.map

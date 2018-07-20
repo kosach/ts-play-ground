@@ -1,5 +1,5 @@
 import express from 'express';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 const bodyParser = require('body-parser');
 import  { peoples }from './controllers';
 
@@ -14,12 +14,23 @@ app.get('/page', (req, res) => {
 
 // app.get('/data', (req: Request, res: Response) => peoples.get);
 
-app.get('/peoples', (req: Request, res: Response) => 
+// app.use((req: Request, res: Response, next: NextFunction)=>{
+//   console.log('App next');
+//   next();
+// })
+app.get('/peoples', (req: Request, res: Response, next: NextFunction)=>{
+  // console.log('Middlware');
+  next();
+},(req: Request, res: Response) => 
   peoples.get()
     .then(people => res.status(200).send(people)))
-app.post('/peoples', (req: Request, res: Response) => {
+app.post('/peoples', (req: Request, res: Response, next: NextFunction)=>{
+  console.log('Middlware');
+  next();
+}, (req: Request, res: Response) => {
   return peoples.create(req.body)
-    .then(people => res.status(200).send(people));
+    .then(people => res.status(200).send(people))
+    .catch((error) => res.status(400).send(error));
   });
 
 export default app;
