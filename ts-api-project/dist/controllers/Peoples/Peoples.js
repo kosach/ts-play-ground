@@ -21,6 +21,7 @@ class Peoples extends Main_1.default {
         }));
     }
     static create(people) {
+        console.log(this.shema);
         return new Promise((resolve) => resolve(people));
     }
 }

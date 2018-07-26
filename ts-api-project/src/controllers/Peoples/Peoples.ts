@@ -21,6 +21,7 @@ export default class Peoples extends Main{
 
   @postValidate(schema)
   static create(people: People): Promise<People>{
+    console.log(this.shema);
     return new Promise((resolve) => resolve(people));
   }
 }

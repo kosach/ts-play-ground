@@ -5,17 +5,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const ajv_1 = __importDefault(require("ajv"));
 const ajv = ajv_1.default({ allErrors: true });
-function postValidate(scheme) {
-    return function (target, key, value) {
+exports.postValidate = (scheme) => {
+    return (target, key, value) => {
         return {
-            value: function (args) {
+            value: (args) => {
                 const valid = ajv.validate(scheme, args);
                 if (valid)
-                    return value.value.call(this, args);
-                return Promise.reject('Wrong parameters');
+                    return value.value.call(target, args);
+                return Promise.reject(`Wrong parameters in class "${target.name}" method "${key}"`);
             }
         };
     };
-}
-exports.postValidate = postValidate;
+};
 //# sourceMappingURL=index.js.map
